@@ -1,8 +1,11 @@
 import './App.scss';
+import React from 'react'
+import AlbumFeature from './features/Album';
 
 function App() {
   return (
-    <div className="app">
+    <div className="App">
+      <AlbumFeature />
     </div>
   );
 }

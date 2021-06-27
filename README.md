@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# Note:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+* Deploy auto with Vercel
+* Khi chuyển đổi từ JSX sang JS thì nó sẽ dùng babel để convert. 
+  (React.createElement)
 
-## Available Scripts
+# Contents:
 
-In the project directory, you can run:
+**1. ReactDOM.render**
+* Thường sử dụng 1 lần, dùng để render(App hoặc html) vào root trong `src/index`
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**2. Component**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Component giống như chia bố cục cho một trang. VD: 1 trang web có 1 component cha là App, trong App sẽ có những component Menu, Bar, Content,.... 
+* Có 2 loại component:
+  
+  * Class component
+  * Functional component (Recommended)
+  * Tìm hiểu Container và Presentational component
+* Phân biệt Container component và Presentational component
+  * Container component: Quan tâm đến dữ liệu, lấy dữ liệu, truyền xuống presentational component, quản lý nhiều hơn, không biết render
+  * Presentational component: Không quan tâm dữ liệu đâu ra, chỉ cần render dữ liệu, quan tâm hiển thị
 
-### `yarn test`
+**3. Props**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Props: Là dữ liệu truyền từ component cha xuống component con và dữ liệu này sẽ không thay đổi được tại component con. Nếu muốn thay đổi thì phải thay đổi ở component cha. Nhờ props mà tạo được sự đa dạng cho component
+* Cách khai báo
+  ```js
+    //Con
+    function ColorBox(props) {
+      const { color } = props;
+      return (
+        <div className="box" style={{ backgroundColor: color }}></div>
+      )
+    }
 
-### `yarn build`
+    //Cha
+    export default function App() {
+      return (
+        <section>
+          <ColorBox color="red"></ColorBox>
+          <ColorBox color="green"></ColorBox>
+          <ColorBox color="blue"></ColorBox>
+        </section>
+      );
+    }
+  ```
+* Sử dụng `propTypes` để kiểm tra đúng loại dữ liệu cho props
+  ```js
+    //Add package prop-type
+    import PropTypes from "prop-types";
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    //Declare all props used in this component
+    ColorBox.propTypes = {
+      color: PropTypes.string.isRequired,
+      rounded: PropTypes.bool,
+    };
+    // Declare forget to set default value for non-required props
+    ColorBox.defaultProps = {
+      rounded: true
+    };
+  ```
+**4. Folder structure**
+  ```
+  src
+  |_ components (Share components between features)
+  | |_ Loading
+  |   |_ index.jsx
+  |   |_ style.scss
+  |
+  |_ features
+  | |_ Todo
+  |   |_ components (component of feature Todo)
+  |   |_ pases (page of feature Todo)
+  |   |_ index.jsx (entry point of feature Todo)
+  |
+  |_ App.js
+  ```

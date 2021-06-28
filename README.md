@@ -4,6 +4,7 @@
 * Khi chuyển đổi từ JSX sang JS thì nó sẽ dùng babel để convert. 
   (React.createElement)
 * Khi làm việc với object hoặc array phải luôn tạo ra clone ra một biến mới. Dựa vào những thuộc tính cũ để thay đổi.
+* Array destructoring
 
 # Contents:
 
@@ -100,6 +101,121 @@ Component giống như chia bố cục cho một trang. VD: 1 trang web có 1 co
 ngược xuống component con.
 * Truyền dữ liệu giữa các trang khác nhau : dùng Redux.
 
-**7. Life cycles**
+**7. Life cycles** (Chỉ áp dụng với Class Component)
 
-![life-cycles](https://completejavascript.com/static/b0603dba6cc7f524cdfaf2671184a61c/7c811/react-lifecycle-diagram.png)
+  ![life-cycles](https://completejavascript.com/static/b0603dba6cc7f524cdfaf2671184a61c/7c811/react-lifecycle-diagram.png)
+
+* Về việc sử dụng component: Khuyên sử dụng PureComponent hơn là Component (`extends`) vì nó sẽ kiểm tra sự thay đổi của props và state trước khi render lại component.
+
+* **Constructor**
+  * Khai báo state
+  * Định nghĩa properties của component
+  * Nhớ phải khai báo `super(props)`
+  ```js
+    class App extends PureComponent {
+      construtor(props) {
+        super(props)
+
+        this.DEFAULT_MAX_LENGTH = 10;
+        this.state = {
+          productList: []
+        };
+      }
+    }
+  ```
+* **componentDidMount()** (Chỉ run đúng 1 lần)
+  * Được phép dùng
+  * Khởi tạo dữ liệu cho component: gọi API, biến đổi dữ liệu, cập nhật state
+  * Gửi tracking page view (GA, FacebookPixel,..)
+  * Thứ tự chạy: `constructor()` -> `render()` -> `componentDidMount()`
+* **componentWillUnmount()** (Chỉ run đúng 1 lần)
+  * Được phép dùng
+  * Clear timeout hoặc interval nếu có dùng.
+  * Reset dữ liệu trên redux nếu cần thiết
+* **componentDidUpdate** (Diễn ra từ 0 cho đến n lần)
+  * Cực kì hạn chế dùng
+  * ADVANCED chỉ dùng nếu muốn handle update component khi click nút back mà trên URL có query params
+* Lỗi **Can't setState() on ummounted component**. Sử dụng 1 flag để check ComponentMounted hay chưa. Khởi tạo ban đầu bằng `false`, trong componentDidMount sẽ bằng `true`, trong componentWillUnmount sẽ bằng `flase`
+
+**8. React Hook**
+* Ra đời nhằm mục đích hỗ trợ cho cho functional component trở nên powerfull hơn. Làm cho FC có thể sử dụng với lifecycles và states.
+* setState sử dụng `merging` còn useState sử dụng `replacing`
+* **useEffect**
+  * Side effects
+    * Gọi API lấy dữ liệu
+    * Tương tác với DOM
+    * Subscriptions
+    * setTimeout, setInterval
+    * Có hai loại side effects: cần cleanup và không cần cleaup(API, DOM)
+  * Thực thi sau mỗi lần render.
+  * Là một hook cơ bản trong React hooks.
+  * Mỗi hook gồm 2 phần: side effect và clean up(optinal)
+  * Những lần render tiếp theo phụ thuộc vào dependencies
+  ``` js
+    function useEffect(callback, dependencies) {}
+
+    function App() {
+      // executed before each render
+      const [color, setColor] = useState('deeppink');
+      // executed after each render
+      useEffect(() => {
+        // do your side effect here ...
+        return () => {
+          // Clean up here ...
+          // Executed before the next render or unmount
+          };
+      }, []);
+      // rendering
+      return <h1>Learn Frontend</h1>;
+    }
+
+    // Step
+    MOUNTING
+    - rendering
+    - run useEffect()
+    UPDATING
+    - rendering
+    - run `useEffect() cleanup` nêu dependencies thay đổi.
+    - run `useEffect()` nếu dependencies thay đôi.
+    UNMOUNTING
+    - run `useEffect() cleanup`.
+  ```
+  * Sử dụng useEffect kèm điều kiện
+  ```js
+    function App() {
+      const [filters, setFilters] = useState();
+
+      useEffect(() => {
+        // EVERY
+        // No dependencies defined
+        // Always execute after every render
+        return () => {
+          // Execute before the next effect or unmount.
+        };
+      });
+
+      useEffect(() => {
+        // ONCE
+        // Empty dependencies
+        // Only execute once after the FIRST RENDER
+        return () => {
+          // Execute once when unmount
+        };
+      }, []);
+
+      useEffect(() => {
+        // On demand
+        // Has dependencies
+        // Only execute after the first RENDER or filters state changes
+        return () => {
+          // Execute before the next effect or unmount.
+        };
+      }, [filters]);
+    }
+  ```
+* **Custom hook**
+ * Là một hook do mình tự định nghĩa ra.
+ * Custom hook là một function hơi đặc biệt.
+ * Cách đặt tên: bắt đầu bằng `use` (useClock, useColor,...)
+ * Tách riêng biệt phần logic ra khỏi phần UI
+ * Chia sẻ logic giữa các Component

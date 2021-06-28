@@ -3,6 +3,7 @@
 * Deploy auto with Vercel
 * Khi chuyển đổi từ JSX sang JS thì nó sẽ dùng babel để convert. 
   (React.createElement)
+* Khi làm việc với object hoặc array phải luôn tạo ra clone ra một biến mới. Dựa vào những thuộc tính cũ để thay đổi.
 
 # Contents:
 
@@ -77,3 +78,28 @@ Component giống như chia bố cục cho một trang. VD: 1 trang web có 1 co
   |
   |_ App.js
   ```
+**5. State**
+  
+* State được tạo ra và quản lý bởi component hiện tại, dùng cho những dữ liệu có khả năng sẽ thay đổi. Nếu props hoạc state thay đổi thì component sẽ được re-render
+* Khai báo
+  ```js
+  function Counter(props){
+    const [count, setCount] = useState(0)
+
+    return (
+      <div>
+        <button onClick={()=> setCount(x => x + 1)}></button> 
+      </div>
+    )
+  }
+  ```
+
+**6. Cách sử dụng state và props**
+* Truyền dữ liệu từ cha xuống con : Props
+* Truyền dữ liệu giữa component ngang hàng : để state trên component cha, rồi từ cha truyền
+ngược xuống component con.
+* Truyền dữ liệu giữa các trang khác nhau : dùng Redux.
+
+**7. Life cycles**
+
+![life-cycles](https://completejavascript.com/static/b0603dba6cc7f524cdfaf2671184a61c/7c811/react-lifecycle-diagram.png)

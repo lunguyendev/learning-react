@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AlbumList from './components/AlbumList';
 
 AlbumFeature.propTypes = {
@@ -25,7 +24,6 @@ function AlbumFeature(props) {
     }
   ];
 
-  console.log(albumList)
   return (
     <div>
       <h1>Bài hát yêu thích</h1>

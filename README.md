@@ -5,7 +5,16 @@
   (React.createElement)
 * Khi làm việc với object hoặc array phải luôn tạo ra clone ra một biến mới. Dựa vào những thuộc tính cũ để thay đổi.
 * Array destructoring
+* Sử dụng Prettier để chuẩn code convention cho Team
+* Thư viện Material UI để tái sử dụng UI có sẵn
+  ```html
+    // Install package core and icon
+    yarn add @material-ui/core --save
+    yarn add @material-ui/icons --save
 
+    // Add link into public/index.html 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  ```
 # Contents:
 
 **1. ReactDOM.render**
@@ -219,3 +228,25 @@ ngược xuống component con.
  * Cách đặt tên: bắt đầu bằng `use` (useClock, useColor,...)
  * Tách riêng biệt phần logic ra khỏi phần UI
  * Chia sẻ logic giữa các Component
+
+**9. Routing**
+  * Sử dụng package "react-router-dom"
+  * Đặt `BrowserRouter` ở ngòai cùng
+  * Sử dụng `Route` để render cho từng component
+  * `Link` và `NavLink` giống nhau về mặt chức năng nhưng `NavLink` sẽ tự động thêm vào một `class="active"` khi chúng ta click vào. Để thay đổi tên class này ta dùng `activeClassName="name"` thường sử dụng cho dạng menu.
+  * `Switch` chỉ render 1 thời điểm chi 1 component và nó chỉ match với path đầu tiên nó nhận và return tại đóp. còn `Route` nó sẽ render tất cả componet mà match với path đó. 
+  * `Route` matching
+    * Mặc định `exact = flase` khi đó Router sẽ match khi `url start with path`. Sử dụng ở cha.
+    * Khi `exact = true` khi đó Router sẽ match khi `url = path`. Sử dụng ở con.
+  * Các hook trong react-router-dom
+    * `useHistory`: trả về history instance, dùng để navigate. Để di chuyể n từ trang này sang trang khác
+    * `useLocation`: Trả về location object của URL hiện tại. Lấy thông tin của location hiện tại
+    * `useParams`: Trả về path params object của URL hiện tại. Lấy những path params hiện tại
+    * `useRouteMatch`: Trả về match object của URL hiện tại.
+    * Phân biệt `path param` và `url param`: 
+      * `todos/:id` -> `todos/1` -> `path param:` { id: 1 } 
+      * `/todo?page=1&size=10` -> `url param:` page=1&size=10
+  * Redirect
+    * `<Redirect from="/home" to="/" exact /useEffect>`
+  * Nested routing:
+    * Sử dụng Nested Routing bằng cách sử dụng useRouteMatch để lấy đường dẫn của cha, sau đó `.path` để ra đường dẫn

@@ -10,7 +10,6 @@ AlbumList.propTypes = {
 
 function AlbumList(props) {
   const { albumList } = props
-  console.log(albumList)
   return (
     <ul className="album-list">
       {albumList.map(album => (

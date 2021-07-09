@@ -250,3 +250,8 @@ ngược xuống component con.
     * `<Redirect from="/home" to="/" exact /useEffect>`
   * Nested routing:
     * Sử dụng Nested Routing bằng cách sử dụng useRouteMatch để lấy đường dẫn của cha, sau đó `.path` để ra đường dẫn
+**10. API Module**
+  * Thư viện làm việc với API, Http Client: `axios` -> `yarn add axios --save`
+  * Để tổ chức tốt khi gọi API, chúng ta nên chia API để gọi theo từng feature (`productAPI.js`, `userAPI.js`..) và những module này sẽ gọi đến `axiosClient.js` để ta có thể dễ dàng quản lý, và handle được nhiều vấn đề liên quan(bảo mật, xử lý data, gắn token,...).
+**11. Form**
+  * Install: `yarn add --save react-hook-form yup @hookform/resolvers`

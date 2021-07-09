@@ -1,5 +1,5 @@
 import './App.scss';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import TodoFeature from './features/Todo'
 import AlbumFeature from './features/Album'
@@ -7,7 +7,16 @@ import NotFound from './components/NotFound';
 import HomePage from './components/HomePage';
 import ColorBoxFeature from './features/LabUseState/ColorBox';
 import TodoListFeature from './features/LabUseState/TodoList';
+import productApi from './api/productApi';
 function App() {
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const productList = await productApi.getAll();
+      console.log(productList);
+    }
+
+    fetchProduct()
+  }, [])
   return (
     <div className="App">
       <p><Link to="/todo-list">Todos</Link></p>
